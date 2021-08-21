@@ -1,11 +1,24 @@
 import { useEffect, useState } from "react"
 import DisplayRecipe from "./DisplayRecipe"
 import SearchField from "./SearchField"
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
+}));
 
 export default function Recipes(){
     const [initialRecipes,setInitialRecipes]=useState([])
     const [recipes,setRecipes]=useState([])
+
+    const classes = useStyles();
+
     const getRecipes=async()=>{
         
         const rawData=await fetch("https://recipe-app-backend-api.herokuapp.com/recipes",{
@@ -21,7 +34,11 @@ export default function Recipes(){
     },[])
 
     if(!recipes.length){
-        return(<>No Recipes Found</>)
+        return (
+            <div className={classes.root}>
+            <CircularProgress />
+            </div>
+        );
     }
     return(
         <>
