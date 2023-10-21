@@ -1,18 +1,16 @@
-
-
-
 import { useForm } from "react-hook-form";
 import "./AddRecipe.css";
 import { Container } from "@material-ui/core";
 import { useState } from "react";
+import { backend_url } from "../constants";
 
 export default function AddRecipe() {
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm({
-    criteriaMode: "all"
+    criteriaMode: "all",
   });
   const [btnText, setBtnText] = useState("Add Recipe");
   const [btnColor, setBtnColor] = useState(""); //initial default color
@@ -24,15 +22,14 @@ export default function AddRecipe() {
       name: data["Recipename"],
       url: data["Recipe-Image-Url"],
       description: data["Recipe-Description"],
-      details: data["Recipe-Procedure"]
+      details: data["Recipe-Procedure"],
     };
-    console.log(rcpData)
-    let resp = await fetch("https://recipe-app-backend-api.herokuapp.com/add_recipe", {
+    console.log(rcpData);
+    let resp = await fetch(`${backend_url}/add_recipe`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(rcpData)
-    })
-    .then((res) => {
+      body: JSON.stringify(rcpData),
+    }).then((res) => {
       // res.status === 201
       //   ? console.log("success")
       //   : console.log("Sry, could not add, pls try again");
@@ -96,7 +93,7 @@ function CustomInput({ label, register, errors }) {
         placeholder={label}
         {...register(label, {
           required: true,
-          minLength: 3
+          minLength: 3,
         })}
       />
       {errors[label] && errors[label].type === "required" && (
@@ -121,7 +118,7 @@ function CustomTextArea({ label, register, errors }) {
         name={label}
         {...register(label, {
           required: true,
-          minLength: 10
+          minLength: 10,
         })}
       />
       {errors[label] && errors[label].type === "required" && (
